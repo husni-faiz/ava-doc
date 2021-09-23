@@ -62,7 +62,7 @@ riscv32-unknown-elf-gcc -o hello hello.c
 ## Test the Program
 
 There are four ways to test a program:
-- RISC-V ISA simulator (Spike).
+- RISC-V ISA Simulator (Spike).
 - RTL Simulation (Verilator): No I/O devices is available in RTL simulation.
 - FPGA Simulation: simulate the program using Xilinx ISim
 - FPGA Board: Full I/O support (UART and SD).
@@ -122,10 +122,21 @@ sudo make install
 ```
 Now everything is ready to run the program. 
 
-Spike uses the `RV64IMAFDC` ISA by default. So to run a 32bit ISA run it a follows,
+Spike uses the `RV64IMAFDC` ISA by default. So to run a 32bit ISA run it as follows,
 ```
 spike --isa=RV32IMAFDC pk hello
 ```
 
 Program output:
 ![hello-world-output](img/hello-world.png)
+
+# Next
+
+Use a real processor with Verilator: CV32E40P
+
+Generate the Verilator model of the Standard CV32E40P.
+```
+git clone https://github.com/openhwgroup/core-v-verif.git
+cd ./core-v-verif/cv32e40p/sim/core
+make
+```
