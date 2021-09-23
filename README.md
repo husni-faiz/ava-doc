@@ -31,6 +31,9 @@ Configure and start the build
 make -j4
 ```
 
+`M:` Standard Extension for Integer Multiplication and Division
+`C:` Standard Extension for Compressed Instructions
+
 NOTE: 
 Recent versions of each which don't support the RISC-V Vector ISA, 
 or older versions which do have RVV support.
@@ -134,9 +137,18 @@ Program output:
 
 Use a real processor with Verilator: CV32E40P
 
+![CV32E40P](img/CV32E40P_Block_Diagram.png)
+
 Generate the Verilator model of the Standard CV32E40P.
 ```
 git clone https://github.com/openhwgroup/core-v-verif.git
 cd ./core-v-verif/cv32e40p/sim/core
 make
 ```
+
+The model builds but the sample programs fail to build.
+
+RISC-V ISA
+- Instruction Types 
+- Instruction Decoding
+
