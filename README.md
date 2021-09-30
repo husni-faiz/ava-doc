@@ -1,5 +1,81 @@
 # ava-doc
 
+
+# Introduction
+
+Vectorization is a massive compile-time reordering of operation sequencing.
+Requires extensive loop dependence analysis.
+
+# Vector Machine / Processor
+
+Data level parallalism
+Ex: adding two large arrays. Processor will have to load/store multiple times
+
+# RISC-V Vector Extention
+
+`Zve*`: Vector Extensions for Embedded Processors
+
+## Vector Registers
+
+The vector extension adds 32 architectural vector registers, `v0-v31` 
+to the base scalar RISC-V ISA.
+
+`ELEN`:The maximum size in bits of a vector element that any operation can produce or consume.
+`VLEN`:The number of bits in a single vector register.
+
+## Vector Instruction Formats
+The instructions in the vector extension fit under 
+two existing major opcodes (LOAD-FP and STORE-FP) and 
+one new major opcode (OP-V).
+
+
+# RVV Assembly
+
+![rvv-assembly](img/rvv-assembly.png)
+
+Comparing Scalar and Vector Program
+![Vector Code Example](img/Vector+Code+Example.jpg)
+
+Vector processing is not great for general purpose computing.
+- Lower Clock Frequency
+- No Out of Order Execution
+- Cache is tiny.
+
+
+Vector processor is really good at specialized tasks:
+- Machine 
+- Compression both for images, zip files etc
+- Cryptography
+- Multimedia: audio, video
+- Speech and handwriting
+- Networking. Parity checks, checksums
+- Databases. Hash/joins
+
+In particular Machine Learning has become huge. 
+This has become a major focus in data centers. 
+- Apple added the Neural Engine on their iPad and iPhone Apple Silicon chips.
+- Google made their on Tensor Processing Units (TPU) to offer higher speed machine learning in the crowd.
+
+RISC-V designers David Patterson and Andrew Waterman wrote an article: [SIMD Instructions Considered Harmful](https://www.sigarch.org/simd-instructions-considered-harmful/)
+
+Single Instruction Multiple Data (SIMD) Extention - 
+apply the same operation to multiple elements.
+
+SIMD came about in a world where the need was primarily needed 
+for short vectors in multimedia settings.
+
+
+## Commonly Used Neural Network Functions
+
+![NN Functions](img/Neural-Network-Functions.png)
+
+ML Models use 8bit data for efficiency on small devices
+
+Accelarating Convolution:
+
+![Accelarating Convolution](img/Accelarating-Convolution.png)
+
+
 # Running a C program on RISC-V
 
 As the first step we'll write a C program and compile it to 32 bit RISC-V 
@@ -133,11 +209,16 @@ spike --isa=RV32IMAFDC pk hello
 Program output:
 ![hello-world-output](img/hello-world.png)
 
-# Next
 
-Use a real processor with Verilator: CV32E40P
+# Blinking LED
 
-![CV32E40P](img/CV32E40P_Block_Diagram.png)
+Design HDL code that will blink an LED at a specified frequency of 
+100 Hz, 50 Hz, 10 Hz, or 1 Hz. For each of the blink frequencies, 
+the LED will be set to 50% duty cycle (it will be on half the time).
+
+25 MHz oscillator.
+4 inputs and 1 output. 
+
 
 Generate the Verilator model of the Standard CV32E40P.
 ```
@@ -146,9 +227,23 @@ cd ./core-v-verif/cv32e40p/sim/core
 make
 ```
 
+Fix for build issue of Core-V-Verifa: Github Issue [#896](https://github.com/openhwgroup/core-v-verif/issues/896)
+![Core-Verification](img/cv32e40p-verification.png)
+
 The model builds but the sample programs fail to build.
 
 RISC-V ISA
 - Instruction Types 
 - Instruction Decoding
 
+# Resources
+
+RVV Specification: [Github](https://github.com/riscv/riscv-v-spec/blob/master/v-spec.adoc)
+
+# Next
+
+Goal For Mid Evalutation:
+- Understand the current implentation and run it in simlulation.  
+
+Use a real processor with Verilator: CV32E40P
+![CV32E40P](img/CV32E40P_Block_Diagram.png)
