@@ -210,16 +210,6 @@ Program output:
 ![hello-world-output](img/hello-world.png)
 
 
-# Blinking LED
-
-Design HDL code that will blink an LED at a specified frequency of 
-100 Hz, 50 Hz, 10 Hz, or 1 Hz. For each of the blink frequencies, 
-the LED will be set to 50% duty cycle (it will be on half the time).
-
-25 MHz oscillator.
-4 inputs and 1 output. 
-
-
 Generate the Verilator model of the Standard CV32E40P.
 ```
 git clone https://github.com/openhwgroup/core-v-verif.git
@@ -239,6 +229,25 @@ RISC-V ISA
 # Resources
 
 RVV Specification: [Github](https://github.com/riscv/riscv-v-spec/blob/master/v-spec.adoc)
+OpenHWGroup Q&A about Vector Extention: [YouTube](https://youtu.be/QzCa3VlflT4?t=2131)
+- A research is going on for a application class Vector Co-Processor for CV6 in colloboration with ATH and Polytechnique Montréal
+[Register-transfer level](https://en.wikipedia.org/wiki/Register-transfer_level)
+
+- RTL) is a design abstraction which models a synchronous digital circuit in terms of the flow of digital signals (data) between hardware registers, and the logical operations performed on those signals. 
+
+- used in HDLs like Verilog and VHDL to create high-level representations of a circuit, from which lower-level representations and ultimately actual wiring can be derived. Design at the RTL level is typical practice in modern digital design.
+ 
+- Unlike in software compiler design, where the register-transfer level is an intermediate representation and at the lowest level, the RTL level is the usual input that circuit designers operate on.
+
+- A synchronous circuit consists of two kinds of elements: 
+1. registers (Sequential logic) and 
+2. combinational logic. 
+
+- Registers (usually implemented as D flip-flops)
+
+- Using an EDA tool for synthesis, this description (ex: VHDL code) can usually be directly translated to an equivalent hardware implementation file for an ASIC or an FPGA. The synthesis tool also performs logic optimization. 
+
+At the register-transfer level, some types of circuits can be recognized. If there is a cyclic path of logic from a register's output to its input (or from a set of registers outputs to its inputs), the circuit is called a state machine or can be said to be sequential logic. If there are logic paths from a register to another without a cycle, it is called a pipeline. 
 
 # Next
 
@@ -247,3 +256,40 @@ Goal For Mid Evalutation:
 
 Use a real processor with Verilator: CV32E40P
 ![CV32E40P](img/CV32E40P_Block_Diagram.png)
+
+Supports the **RV32I Base Integer Instruction Set**, version 2.1
+following standard instruction set extensions
+- 
+C: Standard Extension for Compressed Instructions
+2.0
+always enabled
+
+M: Standard Extension for Integer Multiplication and Division
+2.0
+always enabled
+
+Zicount: Performance Counters
+2.0
+always enabled
+
+Zicsr: Control and Status Register Instructions
+2.0
+always enabled
+
+Zifencei: Instruction-Fetch Fence
+2.0
+always enabled
+
+F: Single-Precision Floating-Point
+2.2
+optionally enabled based on FPU parameter
+
+
+# Blinking LED
+
+Design HDL code that will blink an LED at a specified frequency of 
+100 Hz, 50 Hz, 10 Hz, or 1 Hz. For each of the blink frequencies, 
+the LED will be set to 50% duty cycle (it will be on half the time).
+
+25 MHz oscillator.
+4 inputs and 1 output. 

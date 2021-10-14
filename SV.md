@@ -50,7 +50,6 @@ Two syntexes for signals
 2. reg - used with a sequential statement (aka the `always` block) or with procedural statements
 
 
-
 ```
 module test();
 	
@@ -115,3 +114,7 @@ endmodule
 ![System Verilog Datatypes](img/sv-data-types.png)
 Z: High impedence (No voltage ex: disconnected)
 X: Unknown
+
+![Numerical Variables](img/)
+
+wire, reg, logic are used for Signals modelling in synthesis and as Variables in simulation.
