@@ -217,14 +217,67 @@ cd ./core-v-verif/cv32e40p/sim/core
 make
 ```
 
+The model builds but the sample programs fail to build.
 Fix for build issue of Core-V-Verifa: Github Issue [#896](https://github.com/openhwgroup/core-v-verif/issues/896)
 ![Core-Verification](img/cv32e40p-verification.png)
 
-The model builds but the sample programs fail to build.
+Verilator build options
+```
+verilator --cc --sv --exe \
+        --trace \
+        --top-module tb_top_verilator \
+	  	$(TBSRC_CORE)/tb_top_verilator.sv \
+      	$(TBSRC_CORE)/cv32e40p_tb_wrapper.sv \
+      	$(TBSRC_CORE)/tb_riscv/riscv_rvalid_stall.sv \
+      	$(TBSRC_CORE)/tb_riscv/riscv_gnt_stall.sv \
+      	$(TBSRC_CORE)/mm_ram.sv \
+      	$(TBSRC_CORE)/dp_ram.sv \
+      	-f core-v-cores/cv32e40p/cv32e40p_manifest.flist \
+      	core-v-cores/cv32e40p/bhv/cv32e40p_core_log.sv \
+	  	$(TBSRC_CORE)/tb_top_verilator.cpp
+```
 
-RISC-V ISA
-- Instruction Types 
-- Instruction Decoding
+# Vector Toolchain
+
+Checkout to `rvv-0.8.x`
+```
+git checkout rvv-0.8.x
+mkdir -p build
+cd build
+```
+
+Checkout less broken version of newlib
+```
+cd riscv-newlib
+git checkout 3e5302714fae99acc8c439f5870846312d081631
+cd ..
+```
+
+Configure
+```
+./configure --disable-linux --disable-multilib --disable-gdb --prefix=$RISCV --with-arch=rv32imc --with-abi=ilp32
+```
+
+Build
+```
+make -j16
+sudo make install -j16
+```
+
+# Accelerated Neural Network Functions
+
+# Board Support Package
+
+`libcv-verif.a` (Static Library) : Bare-metal implementations of essential functions usually provided by the OS
+
+- port of the C Runtime
+- port of syscalls that does not rely on an OS
+- interrupt system 
+- vector table.
+
+`link.ld` 
+- used to place the C Runtime start up code at the correct address
+- changes in the address space in the CV32E40P
 
 # Resources
 
@@ -256,6 +309,10 @@ Goal For Mid Evalutation:
 
 Use a real processor with Verilator: CV32E40P
 ![CV32E40P](img/CV32E40P_Block_Diagram.png)
+
+RISC-V ISA
+- Instruction Types 
+- Instruction Decoding
 
 Supports the **RV32I Base Integer Instruction Set**, version 2.1
 following standard instruction set extensions
