@@ -279,6 +279,94 @@ sudo make install -j16
 - used to place the C Runtime start up code at the correct address
 - changes in the address space in the CV32E40P
 
+
+
+# NN Software
+
+algorithms
+```
+Number of cycles to run just vector_operations: 2006
+
+Number of cycles to run just matrix/pooling_operations: 116535
+
+Number of cycles to run just conv2D_operations: 1989964
+
+Number of cycles to run all NN_operations: 2108505
+
+Total Number of cycles to run testbenchs: 9797705
+```
+
+algorithms_vector_assembly
+```
+Number of cycles to run just vector_operations: 890
+
+Number of cycles to run just matrix/pooling_operations: 91184
+
+Number of cycles to run just conv2D_operations: 1973538
+
+Number of cycles to run all NN_operations: 2065612
+
+Total Number of cycles to run testbenchs: 9717158
+```
+
+algorithms_vector_assembly-Optimized-cv32e40p
+```
+Number of cycles to run just vector_operations: 481
+
+Number of cycles to run just matrix/pooling_operations: 50317
+
+Number of cycles to run just conv2D_operations: 314753
+
+Number of cycles to run all NN_operations: 365551
+
+Total Number of cycles to run testbenchs: 8011656
+```
+
+# TinyMLPerf Benchmarking
+
+Benchmarking suite for embedded systems
+- Visual Wake Word (based on TFL Micro)
+- Audio Wake Word
+- Anomaly Detection
+
+```
+invocation 1 took 148333103 cycles
+
+Model output: [
+0.058594 
+0.941406 
+]
+
+invocation 2 took 148324867 cycles
+
+Model output: [
+0.781250 
+0.218750 
+]
+```
+
+[A simple extension to CV32E40P to accelerate AI inference](https://youtu.be/iNeHMnM17vs)
+
+|---|---|---|
+| Feature | Nexys A7-50T |	 BASYS3 |
+| FPGA part |	 XC7A50T-1CSG324C |	 XC7A35T-1CPG236C	|
+| Logic Slices |	 8,150 | 	 5200	|
+| Block RAM (Kbits) |	 2,700 |	 1,800	|
+| DDR2 Memory (MiB) |	 128 |	 -	|
+| Clock Tiles (with PLL) |	 5 |	 5	|
+| DSP Slices |	 120	| 	 90	|
+
+# Progress
+
+- [x] Prepare the Toolchain
+- [x] Standard & Accelarated CV32 Verilator Model
+- [x] Standard & Accelarated Spike Simulation
+- [x] Accelerated Neural Network Functions
+- [x] TinyMLPerf Benchmarking
+- [ ] SystemVerilog Implementaion of Vector Core
+- [ ] Port the core to FPGA
+- [ ] Run Testbench on hardware
+
 # Resources
 
 RVV Specification: [Github](https://github.com/riscv/riscv-v-spec/blob/master/v-spec.adoc)
@@ -302,17 +390,17 @@ OpenHWGroup Q&A about Vector Extention: [YouTube](https://youtu.be/QzCa3VlflT4?t
 
 At the register-transfer level, some types of circuits can be recognized. If there is a cyclic path of logic from a register's output to its input (or from a set of registers outputs to its inputs), the circuit is called a state machine or can be said to be sequential logic. If there are logic paths from a register to another without a cycle, it is called a pipeline. 
 
-# Next
+FreeRTOS Port
+---
+https://github.com/openhwgroup/core-v-docs/blob/master/program/Project%20Descriptions%20and%20Plans/Free%20RTOS/core-v-free-rtos-ppl.md
+
+
 
 Goal For Mid Evalutation:
 - Understand the current implentation and run it in simlulation.  
 
 Use a real processor with Verilator: CV32E40P
 ![CV32E40P](img/CV32E40P_Block_Diagram.png)
-
-RISC-V ISA
-- Instruction Types 
-- Instruction Decoding
 
 Supports the **RV32I Base Integer Instruction Set**, version 2.1
 following standard instruction set extensions
@@ -341,12 +429,3 @@ F: Single-Precision Floating-Point
 2.2
 optionally enabled based on FPU parameter
 
-
-# Blinking LED
-
-Design HDL code that will blink an LED at a specified frequency of 
-100 Hz, 50 Hz, 10 Hz, or 1 Hz. For each of the blink frequencies, 
-the LED will be set to 50% duty cycle (it will be on half the time).
-
-25 MHz oscillator.
-4 inputs and 1 output. 
