@@ -347,8 +347,8 @@ Model output: [
 
 [A simple extension to CV32E40P to accelerate AI inference](https://youtu.be/iNeHMnM17vs)
 
-|---|---|---|
 | Feature | Nexys A7-50T |	 BASYS3 |
+|---|---|---|
 | FPGA part |	 XC7A50T-1CSG324C |	 XC7A35T-1CPG236C	|
 | Logic Slices |	 8,150 | 	 5200	|
 | Block RAM (Kbits) |	 2,700 |	 1,800	|
@@ -402,7 +402,7 @@ Goal For Mid Evalutation:
 Use a real processor with Verilator: CV32E40P
 ![CV32E40P](img/CV32E40P_Block_Diagram.png)
 
-Supports the **RV32I Base Integer Instruction Set**, version 2.1
+sSupports the **RV32I Base Integer Instruction Set**, version 2.1
 following standard instruction set extensions
 - 
 C: Standard Extension for Compressed Instructions
