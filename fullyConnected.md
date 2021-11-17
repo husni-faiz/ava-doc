@@ -33,6 +33,8 @@ vect_add:
 m4 : `vlmul` - Vector Register Grouping
 d1 : `vediv` - Divided Element Extension. The divided element extension allows each element to be treated as a packed sub-vector of narrower elements.
 
+![fully-connected](img/fully-connected.png)
+
 
 N =30, out = 40
 
