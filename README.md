@@ -1,5 +1,10 @@
 # ava-doc
 
+This project is inspired by a research conducted by six masters students 
+from University of Southampton to accelerate Machine Learning tasks 
+using Vector Processing.
+- Presentation : [Video](https://youtu.be/t0Fpy4TzLUE) 
+- Source : [Github](https://github.com/AI-Vector-Accelerator/README)
 
 # Introduction
 
