@@ -61,5 +61,6 @@ void fully_connected(
 ### Testbench
 
 | Inputs (N) | Outputs (out) | Standard Cycle Count | Vector Cycle Count | Optimized CV32E40P Cycle Count |
+|----|----|----|----|----|
 | 30 |	 40 |	 15234	| 10873 | 7033 (x2.1) |
 | 512 |	 512 |	 3156002	| 2043426 | 1224737 (x2.5) |
