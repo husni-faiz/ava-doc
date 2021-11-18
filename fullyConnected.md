@@ -21,6 +21,8 @@ SLEN : The striping distance in bits (VLEN ≥ SLEN ≥ 32)\
 LMUL : number of vector registers in a group\
 AVL : application vector length
 
+## Fully Connected Operation
+
 ![fully-connected](img/fully-connected.png)
 
 Vector Dot Product Assembly
@@ -39,7 +41,7 @@ vect_add:
       bnez a0, vect_add   				# Loop back      
       ret                  			  	# Finished
 ```
-m4 : `vlmul` - Vector Register Grouping
+m4 : `vlmul` - Vector Register Grouping\
 d1 : `vediv` - Divided Element Extension. The divided element extension allows each element to be treated as a packed sub-vector of narrower elements.
 
 
@@ -59,6 +61,35 @@ void fully_connected(
 ```
 
 ### Testbench
+
+```
+void testbench_fully_connected(unsigned long *Cycles_NN_operations){
+	unsigned long startCycles, endCycles;
+	const uint32_t N = 512, out = 512;					# No of inputs and outputs
+	int8_t data[N];										# Input Layer data
+	int8_t weights[out][N];								# List of weights
+	int8_t output[out];									# Output Layer
+
+	printf("\ntestbench_fully_Connected  \n");
+	randFillVector(N, data);
+	randFillMatrix2D(out,N, weights);
+
+	printf("\nData:\n");
+	// printVector(N, data);
+	printf("\nWeights:\n");
+	// printMatrix2D(out, N, weights);
+
+	startCycles=getCycles();
+	fully_connected(N, out, data, weights, output);		# Calculation Starts Here
+	endCycles=getCycles();
+
+	printf("\n\nOutput:   \n");
+	// printVector(out, output);
+	printf("\n");
+	*Cycles_NN_operations +=(endCycles-startCycles);
+
+}
+```
 
 | Inputs (N) | Outputs (out) | Standard Cycle Count | Vector Cycle Count | Optimized CV32E40P Cycle Count |
 |----|----|----|----|----|
