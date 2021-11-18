@@ -65,10 +65,10 @@ void fully_connected(
 ```
 void testbench_fully_connected(unsigned long *Cycles_NN_operations){
 	unsigned long startCycles, endCycles;
-	const uint32_t N = 512, out = 512;					# No of inputs and outputs
-	int8_t data[N];										# Input Layer data
-	int8_t weights[out][N];								# List of weights
-	int8_t output[out];									# Output Layer
+	const uint32_t N = 512, out = 512;		# No of inputs and outputs
+	int8_t data[N];						# Input Layer data
+	int8_t weights[out][N];				# List of weights
+	int8_t output[out];					# Output Layer
 
 	printf("\ntestbench_fully_Connected  \n");
 	randFillVector(N, data);
