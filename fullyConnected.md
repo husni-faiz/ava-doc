@@ -15,10 +15,10 @@ six unprivileged CSRs to a base scalar RISC-V ISA.
 The `vsetvli` instruction sets the `vtype` and `vl` CSRs based on its 
 arguments, and writes the new value of `vl` into `rd`.
 
-ELEN : The maximum size of a single vector element in bits
-VLEN : vector register length in bits
-SLEN : The striping distance in bits (VLEN ≥ SLEN ≥ 32)
-LMUL : number of vector registers in a group
+ELEN : The maximum size of a single vector element in bits\
+VLEN : vector register length in bits\
+SLEN : The striping distance in bits (VLEN ≥ SLEN ≥ 32)\
+LMUL : number of vector registers in a group\
 AVL : application vector length
 
 ![fully-connected](img/fully-connected.png)
