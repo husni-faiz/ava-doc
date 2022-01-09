@@ -230,7 +230,7 @@ Use a real processor with Verilator: CV32E40P
 
 Supports the **RV32I Base Integer Instruction Set**, version 2.1
 following standard instruction set extensions
-- 
+ 
 C: Standard Extension for Compressed Instructions
 2.0
 always enabled
