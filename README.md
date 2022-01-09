@@ -22,24 +22,32 @@ Ex: adding two large arrays. Processor will have to load/store multiple times
 
 ## Vector Registers
 
-The vector extension adds 32 architectural vector registers, `v0-v31` 
-to the base scalar RISC-V ISA.
+Comparing Scalar and Vector Program
+![vector-registers](img/vector-registers.png)
 
-`ELEN`:The maximum size in bits of a vector element that any operation can produce or consume.
-`VLEN`:The number of bits in a single vector register.
+## Vector ISA
 
-## Vector Instruction Formats
-The instructions in the vector extension fit under 
-two existing major opcodes (LOAD-FP and STORE-FP) and 
-one new major opcode (OP-V).
+six unprivileged CSRs to a base scalar RISC-V ISA.
+- `vstart`: Vector start position
+- vxsat
+- vxrm
+- `vtype` : Vector data type register
+- `vl` : Vector length
+- vlenb : VLEN/8 (vector register length in bytes)
 
+The `vsetvli` instruction sets the `vtype` and `vl` CSRs based on its 
+arguments, and writes the new value of `vl` into `rd`.
+
+ELEN : The maximum size of a single vector element in bits\
+VLEN : vector register length in bits\
+SLEN : The striping distance in bits (VLEN ≥ SLEN ≥ 32)\
+LMUL : number of vector registers in a group\
+AVL : application vector length
 
 # RVV Assembly
 
 ![rvv-assembly](img/rvv-assembly.png)
 
-Comparing Scalar and Vector Program
-![Vector Code Example](img/Vector+Code+Example.jpg)
 
 Vector processing is not great for general purpose computing.
 - Lower Clock Frequency
@@ -215,6 +223,38 @@ Program output:
 ![hello-world-output](img/hello-world.png)
 
 
+# Vector Processor
+
+Use a real processor with Verilator: CV32E40P
+![CV32E40P](img/CV32E40P_Block_Diagram.png)
+
+Supports the **RV32I Base Integer Instruction Set**, version 2.1
+following standard instruction set extensions
+- 
+C: Standard Extension for Compressed Instructions
+2.0
+always enabled
+
+M: Standard Extension for Integer Multiplication and Division
+2.0
+always enabled
+
+Zicount: Performance Counters
+2.0
+always enabled
+
+Zicsr: Control and Status Register Instructions
+2.0
+always enabled
+
+Zifencei: Instruction-Fetch Fence
+2.0
+always enabled
+
+F: Single-Precision Floating-Point
+2.2
+optionally enabled based on FPU parameter
+
 Generate the Verilator model of the Standard CV32E40P.
 ```
 git clone https://github.com/openhwgroup/core-v-verif.git
@@ -350,6 +390,63 @@ Model output: [
 ]
 ```
 
+# Optimieze Fully Connected Operation
+
+![fully-connected](img/fully-connected.png)
+
+Vectorized Fully Connected Operation
+```
+void fully_connected(
+	const uint32_t N, 
+	const uint32_t out,
+	int8_t data[N],
+	int8_t weights[out][N],
+	int8_t output[out]){
+
+    for(int i = 0; i<out; i++){
+        vect_dotProduct(N, data, &weights[i], &output[i]);
+    }
+}
+```
+
+### Testbench
+
+```
+void testbench_fully_connected(unsigned long *Cycles_NN_operations){
+	unsigned long startCycles, endCycles;
+	const uint32_t N = 512, out = 512;		# No of inputs and outputs
+	int8_t data[N];						# Input Layer data
+	int8_t weights[out][N];				# List of weights
+	int8_t output[out];					# Output Layer
+
+	printf("\ntestbench_fully_Connected  \n");
+	randFillVector(N, data);
+	randFillMatrix2D(out,N, weights);
+
+	printf("\nData:\n");
+	// printVector(N, data);
+	printf("\nWeights:\n");
+	// printMatrix2D(out, N, weights);
+
+	startCycles=getCycles();
+	fully_connected(N, out, data, weights, output);		# Calculation Starts Here
+	endCycles=getCycles();
+
+	printf("\n\nOutput:   \n");
+	// printVector(out, output);
+	printf("\n");
+	*Cycles_NN_operations +=(endCycles-startCycles);
+
+}
+```
+
+Results
+
+| Inputs (N) | Outputs (out) | Standard Cycle Count | Vector Cycle Count | Optimized CV32E40P Cycle Count |
+|----|----|----|----|----|
+| 30 |	 40 |	 15234	| 10873 | 7033 (x2.1) |
+| 512 |	 512 |	 3156002	| 2043426 | 1224737 (x2.5) |
+
 [A simple extension to CV32E40P to accelerate AI inference](https://youtu.be/iNeHMnM17vs)
 
 | Feature | Nexys A7-50T |	 BASYS3 |
@@ -363,14 +460,21 @@ Model output: [
 
 # Progress
 
+Progress for Mid Evaluation
 - [x] Prepare the Toolchain
 - [x] Standard & Accelarated CV32 Verilator Model
 - [x] Standard & Accelarated Spike Simulation
 - [x] Accelerated Neural Network Functions
 - [x] TinyMLPerf Benchmarking
+
+Initial targets for Final Evaluation 
 - [ ] SystemVerilog Implementaion of Vector Core
 - [ ] Port the core to FPGA
 - [ ] Run Testbench on hardware
+
+After getting feedbacks from the evaluators, the goal for the finale evalution
+was changed. The new target is,
+- [x] Optimize and test a new Neural Network Function
 
 # Resources
 
@@ -403,34 +507,4 @@ https://github.com/openhwgroup/core-v-docs/blob/master/program/Project%20Descrip
 
 Goal For Mid Evalutation:
 - Understand the current implentation and run it in simlulation.  
-
-Use a real processor with Verilator: CV32E40P
-![CV32E40P](img/CV32E40P_Block_Diagram.png)
-
-sSupports the **RV32I Base Integer Instruction Set**, version 2.1
-following standard instruction set extensions
-- 
-C: Standard Extension for Compressed Instructions
-2.0
-always enabled
-
-M: Standard Extension for Integer Multiplication and Division
-2.0
-always enabled
-
-Zicount: Performance Counters
-2.0
-always enabled
-
-Zicsr: Control and Status Register Instructions
-2.0
-always enabled
-
-Zifencei: Instruction-Fetch Fence
-2.0
-always enabled
-
-F: Single-Precision Floating-Point
-2.2
-optionally enabled based on FPU parameter
 
